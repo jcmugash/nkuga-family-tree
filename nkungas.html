@@ -1,0 +1,1131 @@
+# Nkunga M'Mugambi Kimba Family Tree Website
+
+Here's a complete responsive family tree website with all the features you requested:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nkunga M'Mugambi Kimba Family Tree</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --text-color: #333;
+            --light-text: #ecf0f1;
+            --background-color: #f5f5f5;
+            --card-bg: #ffffff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-img {
+            height: 50px;
+            width: auto;
+            border-radius: 50%;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .tagline {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+        
+        /* Navigation */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        nav ul li a:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+        }
+        
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 2rem 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        /* Family Tree Styles */
+        .family-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .patriarch {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 1.5rem 2.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            max-width: 300px;
+        }
+        
+        .member-actions {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .action-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .action-btn.add-child {
+            background-color: #27ae60;
+        }
+        
+        .action-btn.add-spouse {
+            background-color: #8e44ad;
+        }
+        
+        .nuclear-family {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 3rem;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 1.5rem;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .spouses-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .generation-title {
+            margin: 1.5rem 0 1rem;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .members-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            width: 100%;
+        }
+        
+        .member-card {
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            min-width: 180px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .member-img-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .member-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+        
+        .member-details {
+            margin-top: 0.5rem;
+        }
+        
+        .member-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .member-relation {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .children-container {
+            display: none;
+            width: 100%;
+            margin-top: 1.5rem;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        /* Color classes for nuclear families */
+        .family-color-1 { background-color: #3498db; }
+        .family-color-2 { background-color: #e74c3c; }
+        .family-color-3 { background-color: #2ecc71; }
+        .family-color-4 { background-color: #9b59b6; }
+        .family-color-5 { background-color: #1abc9c; }
+        .family-color-6 { background-color: #d35400; }
+        .family-color-7 { background-color: #34495e; }
+        .family-color-8 { background-color: #27ae60; }
+        .family-color-9 { background-color: #8e44ad; }
+        
+        /* Blog Page Styles */
+        .blog-container {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .blog-post {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        
+        .blog-post:hover {
+            transform: translateY(-5px);
+        }
+        
+        .blog-title {
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+        }
+        
+        .blog-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .blog-content {
+            margin-bottom: 1.2rem;
+        }
+        
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+        
+        /* WhatsApp Blog Form */
+        .whatsapp-form {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        /* WhatsApp Float Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+        
+        .member-form {
+            margin-top: 1rem;
+        }
+        
+        .image-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .image-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-color);
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .upload-btn {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            nav ul {
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .spouses-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .patriarch {
+                padding: 1rem 1.5rem;
+            }
+            
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                bottom: 1rem;
+                right: 1rem;
+            }
+            
+            .member-card {
+                min-width: 160px;
+                padding: 1.2rem;
+            }
+            
+            .member-img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Logo and Navigation -->
+    <header>
+        <div class="logo-container">
+            <img src="https://via.placeholder.com/50" alt="Family Logo" class="logo-img">
+            <div class="logo-text">
+                <div class="logo">Nkunga M'Mugambi Kimba</div>
+                <div class="tagline">Family Heritage</div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-link" data-page="home"><i class="fas fa-tree nav-icon"></i> Family Tree</a></li>
+                <li><a href="#" class="nav-link" data-page="blog"><i class="fas fa-blog nav-icon"></i> Blog</a></li>
+                <li><a href="#" class="nav-link" data-page="about"><i class="fas fa-info-circle nav-icon"></i> About</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Main Content Container -->
+    <main>
+        <div class="container">
+            <!-- Home Page (Family Tree) -->
+            <div id="home-page" class="page-content">
+                <h1 class="page-title">Family Tree</h1>
+                
+                <div class="family-tree" id="family-tree-container">
+                    <!-- Family tree will be generated here -->
+                </div>
+            </div>
+            
+            <!-- Blog Page -->
+            <div id="blog-page" class="page-content" style="display: none;">
+                <h1 class="page-title">Family Blog</h1>
+                
+                <div class="blog-container" id="blog-container">
+                    <!-- Blog posts will be loaded here -->
+                </div>
+                
+                <!-- WhatsApp Blog Form -->
+                <div class="whatsapp-form">
+                    <h2><i class="fab fa-whatsapp"></i> Share Family News</h2>
+                    <p>Send us your family updates, photos, and news to be included in the blog.</p>
+                    
+                    <form id="blog-form">
+                        <div class="form-group">
+                            <label for="blog-title">Title</label>
+                            <input type="text" id="blog-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="blog-content">Message</label>
+                            <textarea id="blog-content" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="blog-image">Upload Image (Optional)</label>
+                            <input type="file" id="blog-image" accept="image/*">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Send via WhatsApp</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- About Page -->
+            <div id="about-page" class="page-content" style="display: none;">
+                <h1 class="page-title">About Our Family</h1>
+                
+                <div class="about-container" id="about-container">
+                    <img src="https://via.placeholder.com/800x400" alt="Family Photo" style="width:100%; border-radius:8px; margin-bottom:1.5rem;">
+                    <p>The Nkunga M'Mugambi Kimba family traces its roots to the highlands of Kenya, where our ancestors established a strong community based on unity, hard work, and cultural preservation.</p>
+                    <p>This platform serves as a digital archive of our family tree and a place to share news and updates through our blog. The family tree is interactive - you can click on any family member to see their descendants and use the + buttons to add new family members.</p>
+                    <p>We welcome contributions from all family members to help grow this resource and keep our family connected across generations and geographical locations.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Add Member Modal -->
+    <div class="modal" id="add-member-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Add Family Member</h2>
+            
+            <form class="member-form" id="member-form">
+                <input type="hidden" id="parent-id">
+                <input type="hidden" id="member-type">
+                
+                <div class="image-upload">
+                    <img id="member-image-preview" class="image-preview" alt="Member Image">
+                    <label for="member-image" class="upload-btn">
+                        <i class="fas fa-camera"></i> Upload Photo
+                    </label>
+                    <input type="file" id="member-image" accept="image/*" style="display:none;">
+                </div>
+                
+                <div class="form-group">
+                    <label for="member-name">Full Name</label>
+                    <input type="text" id="member-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="member-gender">Gender</label>
+                    <select id="member-gender" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="member-relation">Relationship</label>
+                    <input type="text" id="member-relation" placeholder="Son, Daughter, Spouse, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="member-notes">Biography/Notes</label>
+                    <textarea id="member-notes" placeholder="Tell us about this family member"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-member">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/254725156300" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">Nkunga M'Mugambi Kimba Family</div>
+            <p>Preserving our heritage for future generations</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p>&copy; <span id="current-year"></span> All rights reserved</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Family Data Structure
+        const familyData = {
+            id: 'patriarch',
+            name: "M'Mugambi Kimba Nkunga",
+            gender: "male",
+            relation: "Family Patriarch",
+            notes: "The patriarch of the family",
+            image: "https://via.placeholder.com/150?text=Nkunga",
+            spouses: [],
+            children: [],
+            familyColor: 1
+        };
+        
+        // Color counter for nuclear families
+        let familyColorCounter = 2; // Start from 2 because patriarch is 1
+        
+        // Sample initial data (can be removed)
+        function initializeSampleData() {
+            // Add sample wives
+            const wife1 = {
+                id: 'wife1',
+                name: "Wanjiru M'Mugambi",
+                gender: "female",
+                relation: "First Wife",
+                notes: "Mother of the first family branch",
+                image: "https://via.placeholder.com/150?text=Wanjiru",
+                children: [],
+                familyColor: 1 // Same as patriarch
+            };
+            
+            const wife2 = {
+                id: 'wife2',
+                name: "Nyambura Kimba",
+                gender: "female",
+                relation: "Second Wife",
+                notes: "Mother of the second family branch",
+                image: "https://via.placeholder.com/150?text=Nyambura",
+                children: [],
+                familyColor: familyColorCounter++
+            };
+            
+            familyData.spouses.push(wife1);
+            familyData.spouses.push(wife2);
+            
+            // Add sample children to wife1 (first nuclear family - blue)
+            const child1 = {
+                id: 'child1',
+                name: "Kamau Nkunga",
+                gender: "male",
+                relation: "First Son",
+                notes: "Eldest son of Wanjiru",
+                image: "https://via.placeholder.com/150?text=Kamau",
+                children: [],
+                familyColor: 1
+            };
+            
+            const child2 = {
+                id: 'child2',
+                name: "Wambui Nkunga",
+                gender: "female",
+                relation: "First Daughter",
+                notes: "First daughter of Wanjiru",
+                image: "https://via.placeholder.com/150?text=Wambui",
+                children: [],
+                familyColor: 1
+            };
+            
+            wife1.children.push(child1);
+            wife1.children.push(child2);
+            
+            // Add grandchildren to child1 (continuing blue family)
+            const grandchild1 = {
+                id: 'grandchild1',
+                name: "Mwangi Kamau",
+                gender: "male",
+                relation: "Grandson",
+                notes: "First grandson",
+                image: "https://via.placeholder.com/150?text=Mwangi",
+                children: [],
+                familyColor: 1
+            };
+            
+            child1.children.push(grandchild1);
+            
+            // Add sample children to wife2 (second nuclear family - red)
+            const child3 = {
+                id: 'child3',
+                name: "Njoroge Kimba",
+                gender: "male",
+                relation: "Second Son",
+                notes: "First son of Nyambura",
+                image: "https://via.placeholder.com/150?text=Njoroge",
+                children: [],
+                familyColor: wife2.familyColor
+            };
+            
+            wife2.children.push(child3);
+            
+            // Add spouse for child3 (creating a new nuclear family - green)
+            const child3Spouse = {
+                id: 'child3-spouse',
+                name: "Muthoni Njoroge",
+                gender: "female",
+                relation: "Wife",
+                notes: "Wife of Njoroge",
+                image: "https://via.placeholder.com/150?text=Muthoni",
+                children: [],
+                familyColor: familyColorCounter++
+            };
+            
+            if (!child3.spouses) {
+                child3.spouses = [];
+            }
+            child3.spouses.push(child3Spouse);
+            
+            // Add children to this new nuclear family (green)
+            const grandchild2 = {
+                id: 'grandchild2',
+                name: "Aoko Njoroge",
+                gender: "female",
+                relation: "Granddaughter",
+                notes: "First daughter of Njoroge",
+                image: "https://via.placeholder.com/150?text=Aoko",
+                children: [],
+                familyColor: child3Spouse.familyColor
+            };
+            
+            child3Spouse.children.push(grandchild2);
+            
+            // Sample blog posts
+            const blogPosts = [
+                {
+                    id: 'post1',
+                    title: "Family Reunion 2023",
+                    date: "June 15, 2023",
+                    content: "Our annual family reunion was a great success with over 100 family members attending. We celebrated our heritage with traditional dances, food, and storytelling.",
+                    image: "https://via.placeholder.com/600x400?text=Reunion+2023"
+                },
+                {
+                    id: 'post2',
+                    title: "New Additions to the Family",
+                    date: "April 5, 2023",
+                    content: "We welcome two new grandchildren this month! The family continues to grow and prosper with these new blessings.",
+                    image: "https://via.placeholder.com/600x400?text=New+Babies"
+                }
+            ];
+            
+            localStorage.setItem('familyBlogPosts', JSON.stringify(blogPosts));
+        }
+        
+        // Initialize sample data (remove this in production)
+        initializeSampleData();
+        
+        // DOM Elements
+        const pageContents = document.querySelectorAll('.page-content');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const familyTreeContainer = document.getElementById('family-tree-container');
+        const blogContainer = document.getElementById('blog-container');
+        const aboutContainer = document.getElementById('about-container');
+        const addMemberModal = document.getElementById('add-member-modal');
+        const memberForm = document.getElementById('member-form');
+        const cancelMemberBtn = document.getElementById('cancel-member');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const parentIdInput = document.getElementById('parent-id');
+        const memberTypeInput = document.getElementById('member-type');
+        const modalTitle = document.getElementById('modal-title');
+        const memberImageInput = document.getElementById('member-image');
+        const memberImagePreview = document.getElementById('member-image-preview');
+        const currentYearSpan = document.getElementById('current-year');
+        const blogForm = document.getElementById('blog-form');
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year
+            currentYearSpan.textContent = new Date().getFullYear();
+            
+            // Render family tree
+            renderFamilyTree();
+            
+            // Load blog posts
+            loadBlogPosts();
+            
+            // Set up navigation
+            setupNavigation();
+            
+            // Set up modal events
+            setupModalEvents();
+            
+            // Set up blog form
+            setupBlogForm();
+            
+            // Set up image upload preview
+            memberImageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        memberImagePreview.src = event.target.result;
+                        memberImagePreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+        
+        // Render the family tree
+        function renderFamilyTree() {
+            familyTreeContainer.innerHTML = '';
+            
+            // Create patriarch element
+            const patriarchElement = document.createElement('div');
+            patriarchElement.className = 'patriarch family-color-' + familyData.familyColor;
+            patriarchElement.innerHTML = `
+                <div class="member-img-container">
+                    <img src="${familyData.image}" alt="${familyData.name}" class="member-img">
+                </div>
+                <div class="member-details">
+                    <div class="member-name">${familyData.name}</div>
+                    <div class="member-relation">${familyData.relation}</div>
+                </div>
+                <div class="member-actions">
+                    <button class="action-btn add-spouse" data-id="${familyData.id}" data-type="spouse" title="Add Spouse">
+                        <i class="fas fa-female"></i>
+                    </button>
+                    <button class="action-btn add-child" data-id="${familyData.id}" data-type="child" title="Add Child">
+                        <i class="fas fa-child"></i>
+                    </button>
+                </div>
+            `;
+            familyTreeContainer.appendChild(patriarchElement);
+            
+            // Create generations container
+            const generationsContainer = document.createElement('div');
+            generationsContainer.className = 'generations-container';
+            familyTreeContainer.appendChild(generationsContainer);
+            
+            // Render each nuclear family (each spouse and their descendants)
+            familyData.spouses.forEach(spouse => {
+                const nuclearFamily = document.createElement('div');
+                nuclearFamily.className = 'nuclear-family';
+                
+                // Spouses container (shows patriarch and wife together)
+                const spousesContainer = document.createElement('div');
+                spousesContainer.className = 'spouses-container';
+                
+                // Add patriarch (simplified version)
+                const patriarchClone = document.createElement('div');
+                patriarchClone.className = `member-card family-color-${familyData.familyColor}`;
+                patriarchClone.innerHTML = `
+                    <div class="member-img-container">
+                        <img src="${familyData.image}" alt="${familyData.name}" class="member-img">
+                    </div>
+                    <div class="member-details">
+                        <div class="member-name">${familyData.name}</div>
+                        <div class="member-relation">${familyData.relation}</div>
+                    </div>
+                `;
+                spousesContainer.appendChild(patriarchClone);
+                
+                // Add spouse
+                const spouseElement = createMemberElement(spouse);
+                spousesContainer.appendChild(spouseElement);
+                
+                nuclearFamily.appendChild(spousesContainer);
+                
+                // Render children if any
+                if (spouse.children.length > 0) {
+                    const generationTitle = document.createElement('h3');
+                    generationTitle.className = 'generation-title';
+                    generationTitle.textContent = 'Children';
+                    nuclearFamily.appendChild(generationTitle);
+                    
+                    const membersRow = document.createElement('div');
+                    membersRow.className = 'members-row';
+                    
+                    spouse.children.forEach(child => {
+                        const childElement = createMemberElement(child);
+                        membersRow.appendChild(childElement);
+                    });
+                    
+                    nuclearFamily.appendChild(membersRow);
+                    
+                    // Render grandchildren if any
+                    let hasGrandchildren = false;
+                    spouse.children.forEach(child => {
+                        if (child.children.length > 0 || (child.spouses && child.spouses.some(s => s.children.length > 0))) {
+                            hasGrandchildren = true;
+                        }
+                    });
+                    
+                    if (hasGrandchildren) {
+                        const generationTitle = document.createElement('h3');
+                        generationTitle.className = 'generation-title';
+                        generationTitle.textContent = 'Grandchildren';
+                        nuclearFamily.appendChild(generationTitle);
+                        
+                        const grandchildrenContainer = document.createElement('div');
+                        grandchildrenContainer.className = 'members-row';
+                        
+                        spouse.children.forEach(child => {
+                            // Render child's own children
+                            child.children.forEach(grandchild => {
+                                const grandchildElement = createMemberElement(grandchild);
+                                grandchildrenContainer.appendChild(grandchildElement);
+                            });
+                            
+                            // Render children from child's spouses
+                            if (child.spouses) {
+                                child.spouses.forEach(spouse => {
+                                    spouse.children.forEach(grandchild => {
+                                        const grandchildElement = createMemberElement(grandchild);
+                                        grandchildrenContainer.appendChild(grandchildElement);
+                                    });
+                                });
+                            }
+                        });
+                        
+                        nuclearFamily.appendChild(grandchildrenContainer);
+                    }
+                }
+                
+                generationsContainer.appendChild(nuclearFamily);
+            });
+            
+            // Add event listeners to all action buttons
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const memberId = this.getAttribute('data-id');
+                    const memberType = this.getAttribute('data-type');
+                    openAddMemberModal(memberId, memberType);
+                });
+            });
+            
+            // Add click events to toggle children visibility
+            document.querySelectorAll('.member-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Don't toggle if clicking on an action button
+                    if (e.target.closest('.action-btn')) {
+                        return;
+                    }
+                    
+                    const childrenContainer = this.querySelector('.children-container');
+                    if (childrenContainer) {
+                        childrenContainer.style.display = childrenContainer.style.display === 'flex' ? 'none' : 'flex';
+                    }
+                });
+            });
+        }
+        
+        // Create a member element
+        function createMemberElement(member) {
+            const memberElement = document.createElement('div');
+            memberElement.className = `member-card family-color-${member.familyColor}`;
+            memberElement.setAttribute('data-id', member.id);
+            
+            // Member content
+            memberElement.innerHTML = `
+                <div class="member-img-container">
+                    <img src="${member.image}" alt="${member.name}" class="member-img">
+                </div>
+                <div class="member-details">
+                    <div class="member-name">${member.name}</div>
+                    <div class="member-relation">${member.relation}</div>
+                </div>
+            `;
+            
+            // Add action buttons
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'member-actions';
+            
+            // Only males can have spouses in this structure
+            if (member.gender === 'male') {
+                const addSpouseBtn = document.createElement('button');
+                addSpouseBtn.className = 'action-btn add-spouse';
+                addSpouseBtn.setAttribute('data-id', member.id);
+                addSpouseBtn.setAttribute('data-type', 'spouse');
+                addSpouseBtn.setAttribute('title', 'Add Spouse');
+                addSpouseBtn.innerHTML = '<i class="fas fa-female"></i>';
+                actionsDiv.appendChild(addSpouseBtn);
+            }
+            
+            const addChildBtn = document.createElement('button');
+            addChildBtn.className = 'action-btn add-child';
+            addChildBtn.setAttribute('data-id', member.id);
+            addChildBtn.setAttribute('data-type', 'child');
+            addChildBtn.setAttribute('title', 'Add Child');
+            addChildBtn.innerHTML = '<i class="fas fa-child"></i>';
+            actionsDiv.appendChild(addChildBtn);
+            
+            memberElement.appendChild(actionsDiv);
+            
+            // Add children container if member has children
+            if (member.children && member.children.length > 0) {
+                const childrenContainer = document.createElement('div');
+                childrenContainer.className = 'children-container';
+                childrenContainer.style.display = 'none';
+                
+                member.children.forEach(child => {
+                    const childElement = createMemberElement(child);
+                    childrenContainer.appendChild(childElement);
+                });
+                
+                memberElement.appendChild(childrenContainer);
+            }
+            
+            return memberElement;
+        }
+        
+        // Open add member modal
+        function openAddMemberModal(parentId, memberType) {
+            parentIdInput.value = parentId;
+            memberTypeInput.value = memberType;
+            
+            // Update modal title based on member type
+            switch(m
